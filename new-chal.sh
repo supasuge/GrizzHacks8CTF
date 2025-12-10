@@ -47,89 +47,89 @@ if [[ "${1:-}" != "init" ]]; then
     exit 1
 fi
 
-echo "[+] Initializing GrizzHacks 8 CTF repository..."
-echo "[+] Building directory structure... Brace yourself."
+#echo "[+] Initializing GrizzHacks 8 CTF repository..."
+#echo "[+] Building directory structure... Brace yourself."
 
 # ROOT FILES --------------------------------------------------
-cat > README.md <<'EOF'
+#cat > README.md <<'EOF'
 # (same rewritten README as above)
-EOF
+#EOF
 
-cat > CONTRIBUTING.md <<'EOF'
+#cat > CONTRIBUTING.md <<'EOF'
 # (same rewritten CONTRIBUTING.md as above)
-EOF
+#EOF
 
-cat > TESTING.md <<'EOF'
+#cat > TESTING.md <<'EOF'
 # (same rewritten TESTING.md as above)
-EOF
+#EOF
 
-echo "__pycache__/ 
-*.pyc
-dist/*.zip
-solution/*.zip
-.env
-.DS_Store" > .gitignore
+#echo "__pycache__/ 
+#*.pyc
+#dist/*.zip
+#solution/*.zip
+#.env
+#.DS_Store" > .gitignore
 
-cat > LICENSE <<'EOF'
-MIT License
-Copyright ...
-EOF
+#cat > LICENSE <<'EOF'
+#MIT License
+#Copyright ...
+#EOF
 
 # CATEGORY GENERATION -----------------------------------------
-for category in "${categories[@]}"; do
-    mkdir -p "$category"
-    echo "# ${category} Challenges" > "$category/README.md"
+#for category in "${categories[@]}"; do
+#    mkdir -p "$category"
+#    echo "# ${category} Challenges" > "$category/README.md"
 
-    for i in $(seq 1 $num_challenges); do
-        chal="$category/challenge$i"
-        mkdir -p "$chal"/{build,dist,solution}
+    #for i in $(seq 1 $num_challenges); do
+     #   chal="$category/challenge$i"
+      #  mkdir -p "$chal"/{build,dist,solution}
 
-cat > "$chal/README.md" <<EOF
+#cat > "$chal/README.md" <<EOF
 # Challenge-$i
-- **Author:** (your name)
-- **Category:** $category
-- **Difficulty:** {Easy | Medium | Hard | Expert}
-- **Flag Format:** \`GrizzCTF{...}\`
+#- **Author:** (your name)
+#- **Category:** $category
+#- **Difficulty:** {Easy | Medium | Hard | Expert}
+#- **Flag Format:** \`GrizzCTF{...}\`
 
 ## Description
 
 
 ## Build Instructions
-\`\`\`
-cd build
-docker build -t ${category,,}-challenge$i .
-\`\`\`
+#\`\`\`
+#cd build
+#docker build -t ${category,,}-challenge$i .
+#\`\`\`
 
 ## Running
-Document how to run the challenge here.
-EOF
+#Document how to run the challenge here.
+#EOF
 
-cat > "$chal/build/Dockerfile" <<EOF
-FROM python:3.11-slim
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt || true
-CMD ["bash"]
-EOF
+#cat > "$chal/build/Dockerfile" <<EOF
+#FROM python:3.11-slim
+#WORKDIR /app
+#COPY . .
+#RUN pip install -r requirements.txt || true
+#CMD ["bash"]
+#EOF
 
-echo "# Add Python dependencies here" > "$chal/build/requirements.txt"
+#echo "# Add Python dependencies here" > "$chal/build/requirements.txt"
 
-cat > "$chal/solution/solve.py" <<EOF
-#!/usr/bin/env python3
+#cat > "$chal/solution/solve.py" <<EOF
+##!/usr/bin/env python3
 
-def solve():
-    print("Solve script for $category challenge $i goes here.")
+#def solve():
+#    print("Solve script for $category challenge $i goes here.")
 
-if __name__ == "__main__":
-    solve()
-EOF
+#if __name__ == "__main__":
+#    solve()
+#EOF
 
-echo "# Solution writeup here" > "$chal/solution/README.md"
+#echo "# Solution writeup here" > "$chal/solution/README.md"
 
-touch "$chal/dist/.gitkeep"
+#touch "$chal/dist/.gitkeep"
 
-    done
-done
+#    done
+#done
 
-echo "[✔] Repo initialization complete. Go make challenges players will cry over."
-exit 0
+#echo "[✔] Repo initialization complete. Go make challenges players will cry over."
+#exit 0
