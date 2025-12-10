@@ -42,10 +42,10 @@ fi
 # ============================================================
 # INIT MODE
 # ============================================================
-if [[ "${1:-}" != "init" ]]; then
-    print_usage
-    exit 1
-fi
+#if [[ "${1:-}" != "init" ]]; then
+#    print_usage
+#    exit 1
+#fi
 
 #echo "[+] Initializing GrizzHacks 8 CTF repository..."
 #echo "[+] Building directory structure... Brace yourself."
