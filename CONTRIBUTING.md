@@ -26,43 +26,65 @@ misc/QRNightmare
 
 ```
 
+## Creating a new challenge
+
+Create a branch as described
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/cyberOU/Grizzhacks8-CTF
+cd Grizzhacks8-CTF
+```
+
+2. Make the a new branch for the challenge
+
+```bash
+git checkout -b <category>/<challenge-name>
+```
+
+3. After creating the challenges, go to the root directory and run
+
+```bash
+git add .
+git commit -m "Add initial challenge for <challenge-name>
+git push -u origin <category>/<chaallenge-name>
+```
+
+4. Open a Pull Request once all changes are final, and handout is ready (if any)
+
+- Now hold your breath as we prey to the almighty merge gods no for no errors
+
 ---
 
 ## 🧱 Folder Rules (The Sacred Architecture)
 
-When adding a new challenge, your folder MUST look like this:
+When adding a new challenge, make sure you seperate your challenge files etc into three folders (`build`, `dist`, `solution`)
 
 ```
-
-CategoryName/
-ChallengeName/
-README.md
-build/
-Dockerfile
-requirements.txt
-dist/
-solution/
-solve.py
-README.md
-
+GrizzCTF-8/Crypto/Exhibit-A » tree
+.
+├── README.md
+├── build
+│   ├── Dockerfile
+│   └── requirements.txt
+├── dist
+│   └── ubuku.py
+└── solution
+    ├── README.md
+    └── solve.py
+4 directories, 6 files
 ```
-
-### Why so strict?
-Because when the repo gets big, chaos spreads faster than a buffer overflow.
 
 ---
 
-## 🏷 Flag Format
+## Flag Format
 
 Every flag MUST follow:
 
 ```
-
 GrizzCTF{something_here}
-
 ```
-
-If your flag doesn’t follow this, your challenge goes to CTF jail.
 
 ---
 
@@ -81,69 +103,9 @@ If your flag doesn’t follow this, your challenge goes to CTF jail.
 
 From inside your challenge directory:
 
-```
-
-tar -czvf <challenge-name>-handout.tar.gz dist/
-
-```
-
-Upload that to CTFd. Not your entire folder. Not your build environment.  
-Just the handout.
-```
-
----
-
-# ✅ **3. NEW TESTING.md (HUMAN VERSION)**
-
-```md
-# Challenge Testing Guide
-
-Congratulations, you finished a challenge.  
-Now we find out whether it actually works or if you just hallucinated success.
-
----
-
-## 1️⃣ Build Test (Does it even compile?)
-
 ```bash
-cd category/challenge/build
-docker build -t ghx8-test .
+tar -czvf <challenge-name>-handout.tar.gz dist/
+# this will be the handout for the participants
 ```
 
-
-If Docker screams, YOU fix it — not the person reviewing your PR.
-
 ---
-
-## 2️⃣ Run Test
-
-Make sure:
-
-- The container starts
-- The challenge behaves correctly
-- Ports are exposed properly
-- No flags leak like a broken faucet
-
----
-
-## 3️⃣ Solver Test
-
-Run your solution:
-
-- Does it solve the challenge?
-- Consistently?
-- Without relying on undefined behavior?
-- Without requiring a blood sacrifice?
-
----
-
-## 4️⃣ Dist Sanity Check
-
-Ensure:
-
-- No source code leaks in `dist/`
-- No flags leak
-- No credentials leak
-- No leftover dev junk (test files, logs, compiled binaries)
-
-If players can accidentally solve it by reading your mistakes, that’s on you.
