@@ -16,3 +16,5 @@ To create a challenge, simply use the bash script to rename the challenge repo t
 ```
 GrizzCTF{...}
 ```
+
+Note that the folder's were created using a script and we don't need to have this many challenges.
