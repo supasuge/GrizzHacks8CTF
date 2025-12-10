@@ -1,1 +1,1 @@
-# Grizzhacks8-CTF
+# (same rewritten README as above)
