@@ -1,7 +1,7 @@
 # Aegis Relay
 
-**Difficulty**: Hard - Requires understanding of OpenPGP packet structure, streaming parser behavior, and knowledge of CVE-2025-47934 vulnerability mechanics. Not solvable through crypto-breaking or brute force.
-**Author: [supasuge](https://github.com/supasuge) | [Evan Pardon](https://linkedin.com/in/evan-pardon)**
+- **Difficulty**: Hard - Requires understanding of OpenPGP packet structure, streaming parser behavior, and knowledge of CVE-2025-47934 vulnerability mechanics. Not solvable through crypto-breaking or brute force.
+- **Author: [supasuge](https://github.com/supasuge) | [Evan Pardon](https://linkedin.com/in/evan-pardon)**
 - **Category**: Web
 - **Difficulty:** Hard
 - **Flag:** `GRIZZ{p4ck3t_d3sync_auth_byp4ss_CVE_2025_47934}`
