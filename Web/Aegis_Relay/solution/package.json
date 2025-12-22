@@ -1,0 +1,12 @@
+{
+  "name": "signed-sealed-deceived-exploit",
+  "version": "1.0.0",
+  "description": "Exploit for CVE-2025-47934",
+  "main": "exploit.js",
+  "scripts": {
+    "exploit": "node exploit.js"
+  },
+  "dependencies": {
+    "openpgp": "5.11.2"
+  }
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AegisRelay - Secure Message Transport System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="grid-overlay"></div>
+  <div class="scan-line"></div>
+
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <div class="logo-shield">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 5 L90 25 L90 65 Q90 95 50 115 Q10 95 10 65 L10 25 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M50 20 L75 35 L75 65 Q75 85 50 100 Q25 85 25 65 L25 35 Z" fill="currentColor" opacity="0.2"/>
+            <circle cx="50" cy="55" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M50 45 L50 55 M50 55 L55 60" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>AEGIS<span class="relay">RELAY</span></h1>
+          <p class="subtitle">SECURE MESSAGE TRANSPORT LAYER</p>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <div class="status-item">
+          <span class="status-dot operational"></span>
+          <span class="status-label">RELAY NODE</span>
+          <span class="status-value">ACTIVE</span>
+        </div>
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <span class="status-label">ENCRYPTION</span>
+          <span class="status-value">PGP-4096</span>
+        </div>
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <span class="status-label">CLEARANCE</span>
+          <span class="status-value">LEVEL-5</span>
+        </div>
+      </div>
+
+      <div class="mission-brief">
+        <div class="brief-header">
+          <span class="brief-tag">CLASSIFIED</span>
+          <span class="brief-separator">|</span>
+          <span class="brief-title">OPERATION KEYSTONE</span>
+        </div>
+        <p class="brief-text">
+          AegisRelay is the final safeguard in our cryptographic chain of command.
+          Agent Alice maintains sole authority over the secure vault containing Operation Keystone's tactical data.
+          All commands must bear her verified signature. The system trusts only cryptographically authenticated directives.
+        </p>
+        <p class="brief-warning">
+          <span class="warning-icon">⚠</span>
+          <strong>SECURITY NOTICE:</strong> Unauthorized vault access attempts are logged and traced.
+          Only messages bearing Agent Alice's authentic PGP signature will be processed.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <section class="upload-section">
+        <div class="section-header">
+          <div class="header-line"></div>
+          <h2><span class="section-number">01</span> MESSAGE SUBMISSION TERMINAL</h2>
+          <div class="header-line"></div>
+        </div>
+
+        <div class="terminal-frame">
+          <div class="terminal-header">
+            <span class="terminal-title">ENCRYPTED MESSAGE INPUT</span>
+            <div class="terminal-controls">
+              <span class="control-dot red"></span>
+              <span class="control-dot yellow"></span>
+              <span class="control-dot green"></span>
+            </div>
+          </div>
+          <div class="input-group">
+            <textarea
+              id="messageInput"
+              placeholder="-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+[PASTE SIGNED MESSAGE FROM AGENT ALICE]
+
+-----BEGIN PGP SIGNATURE-----
+[DIGITAL SIGNATURE BLOCK]
+-----END PGP SIGNATURE-----"
+              rows="14"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="action-grid">
+          <button id="verifyBtn" class="btn-primary">
+            <span class="btn-icon">🔐</span>
+            <span class="btn-text">VERIFY & EXECUTE</span>
+            <span class="btn-glow"></span>
+          </button>
+          <button id="loadSampleBtn" class="btn-secondary">
+            <span class="btn-icon">📋</span>
+            <span class="btn-text">LOAD SAMPLE TRANSMISSION</span>
+          </button>
+          <button id="downloadKeyBtn" class="btn-secondary">
+            <span class="btn-icon">🔑</span>
+            <span class="btn-text">DOWNLOAD ALICE'S PUBLIC KEY</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="results-section hidden" id="resultsSection">
+        <div class="section-header">
+          <div class="header-line"></div>
+          <h2><span class="section-number">02</span> CRYPTOGRAPHIC ANALYSIS</h2>
+          <div class="header-line"></div>
+        </div>
+
+        <div class="panel-container">
+          <div class="panel signature-panel" id="signaturePanel">
+            <div class="panel-header">
+              <div class="panel-icon">🔏</div>
+              <h3>SIGNATURE VERIFICATION</h3>
+              <div class="panel-status">PKI-AUTH</div>
+            </div>
+            <div class="status-content">
+              <div class="loading-spinner hidden" id="loadingSpinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-text">AUTHENTICATING...</div>
+              </div>
+              <div class="verification-result hidden" id="verificationResult">
+                <div class="check-item">
+                  <span class="check-icon">✓</span>
+                  <span class="check-label">Cryptographic Signature</span>
+                  <span class="check-status">VALID</span>
+                </div>
+                <div class="check-item">
+                  <span class="check-icon">✓</span>
+                  <span class="check-label">Signing Authority</span>
+                  <span class="check-status">AGENT ALICE</span>
+                </div>
+                <div class="check-item">
+                  <span class="check-icon">✓</span>
+                  <span class="check-label">Trust Chain</span>
+                  <span class="check-status">VERIFIED</span>
+                </div>
+                <div class="key-info">
+                  <div class="key-label">FINGERPRINT</div>
+                  <div class="key-value" id="keyID"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel execution-panel" id="executionPanel">
+            <div class="panel-header">
+              <div class="panel-icon">⚡</div>
+              <h3>MESSAGE EXECUTION</h3>
+              <div class="panel-status">DECODER</div>
+            </div>
+            <div class="status-content">
+              <div class="extracted-data hidden" id="extractedData">
+                <div class="data-label">DECODED PAYLOAD:</div>
+                <pre id="extractedContent"></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel action-panel" id="actionPanel">
+            <div class="panel-header">
+              <div class="panel-icon">🎯</div>
+              <h3>SYSTEM RESPONSE</h3>
+              <div class="panel-status">RELAY-CTL</div>
+            </div>
+            <div class="status-content">
+              <div class="action-status" id="actionStatus">
+                <div class="status-indicator">
+                  <div class="status-spinner"></div>
+                  <span class="status-text">AWAITING INPUT...</span>
+                </div>
+              </div>
+              <div class="flag-container hidden" id="flagContainer">
+                <div class="vault-unlock">
+                  <div class="vault-animation">
+                    <div class="vault-icon">🔓</div>
+                    <div class="unlock-particles"></div>
+                  </div>
+                  <h4>VAULT ACCESS GRANTED</h4>
+                  <div class="access-label">OPERATION KEYSTONE ARCHIVES</div>
+                  <div class="flag-display">
+                    <div class="flag-label">CLASSIFIED DATA RETRIEVED:</div>
+                    <code id="flagText"></code>
+                  </div>
+                  <div class="flag-footer">
+                    <p class="flag-message" id="flagMessage"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <div class="section-header">
+          <div class="header-line"></div>
+          <h2><span class="section-number">03</span> SYSTEM DOCUMENTATION</h2>
+          <div class="header-line"></div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="info-icon">📡</span>
+              <h3>About AegisRelay</h3>
+            </div>
+            <p>AegisRelay is a secure message transport system designed for high-clearance military and intelligence operations.
+            The system employs OpenPGP cryptographic signatures to ensure message authenticity and maintain chain of command integrity.</p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <span class="info-icon">🛡️</span>
+              <h3>Authentication Protocol</h3>
+            </div>
+            <div class="protocol-steps">
+              <div class="protocol-step">
+                <span class="step-number">1</span>
+                <span class="step-text">Message must contain valid PGP signature from authorized agent</span>
+              </div>
+              <div class="protocol-step">
+                <span class="step-number">2</span>
+                <span class="step-text">Signature verified against Agent Alice's registered public key</span>
+              </div>
+              <div class="protocol-step">
+                <span class="step-number">3</span>
+                <span class="step-text">Command payload extracted and parsed for authorization directives</span>
+              </div>
+              <div class="protocol-step">
+                <span class="step-number">4</span>
+                <span class="step-text">Validated commands executed within secure sandbox environment</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card full-width">
+            <div class="info-card-header">
+              <span class="info-icon">⚙️</span>
+              <h3>Operational Context</h3>
+            </div>
+            <p><strong>Mission Brief:</strong> Operation Keystone's tactical archives are secured within AegisRelay's cryptographic vault.
+            Agent Alice serves as the designated key authority with exclusive access rights. Her PGP signature serves as the sole authentication
+            mechanism for vault access commands.</p>
+            <p><strong>Security Model:</strong> Trust is established through public-key cryptography. The system validates that incoming
+            messages are signed by Agent Alice's private key and contain proper authorization directives before granting vault access.</p>
+            <div class="warning-box">
+              <span class="warning-icon">⚠️</span>
+              <div class="warning-content">
+                <strong>OPERATIONAL SECURITY:</strong> Do not attempt to forge signatures or bypass authentication mechanisms.
+                All access attempts are logged with full network attribution. Unauthorized access constitutes a security breach.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-section">
+          <div class="footer-label">SYSTEM</div>
+          <div class="footer-value">AegisRelay v2.1.3</div>
+        </div>
+        <div class="footer-section">
+          <div class="footer-label">ENCRYPTION</div>
+          <div class="footer-value">OpenPGP/RFC4880</div>
+        </div>
+        <div class="footer-section">
+          <div class="footer-label">CLEARANCE</div>
+          <div class="footer-value">TOP SECRET // SCI</div>
+        </div>
+        <div class="footer-section">
+          <div class="footer-label">AUTHORITY</div>
+          <div class="footer-value">GrizzCTF 2025</div>
+        </div>
+      </div>
+      <div class="footer-disclaimer">
+        This is a cybersecurity challenge environment. All vulnerabilities are intentional for educational purposes.
+      </div>
+    </footer>
+  </div>
+
+  <div id="sampleModal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>ARCHIVED TRANSMISSIONS</h3>
+        <div class="modal-subtitle">Select a verified message from Agent Alice</div>
+      </div>
+      <div id="sampleList" class="sample-grid"></div>
+      <button id="closeSampleModal" class="btn-secondary modal-close">
+        <span class="btn-text">CLOSE</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

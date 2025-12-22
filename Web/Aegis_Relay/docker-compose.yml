@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - FLAG=GRIZZ{p4ck3t_d3sync_auth_byp4ss_CVE_2025_47934}
+      - NODE_ENV=production
+    restart: unless-stopped
