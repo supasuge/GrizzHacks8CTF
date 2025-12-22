@@ -48,6 +48,7 @@ So how do you bypass authentication without breaking the crypto? ... A CVE. KekW
 ## Build Instructions
 
 ```bash
+cd src/
 docker compose up --build -d # builds and run container in detached mode (Port: 3000)
 ```
 
