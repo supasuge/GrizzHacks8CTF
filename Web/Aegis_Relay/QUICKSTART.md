@@ -1,8 +1,16 @@
 # Quick Start Guide
 
+**Author**: [supasuge](https:/github.com/supasuge) | [Evan Pardon](https://linkedin.com/in/evan-pardon)
 ## For Challenge Organizers
 
-### Deploy with Docker (Fastest)
+**Handout for participants (Source code)**
+
+```
+/handout/AegisRelay.zip 
+    -> app.js, index.html, style.css 
+```
+
+### Deploy with Docker (Fastest + Easiest)
 
 ```bash
 docker-compose up --build
@@ -97,6 +105,6 @@ Hard - Requires protocol-level understanding
 
 ## Categories
 
-- Cryptography
 - Protocol Exploitation
-- Binary Manipulation
+- Web
+- OpenPGP/GNUPrivacy Guard

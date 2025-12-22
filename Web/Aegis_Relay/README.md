@@ -8,11 +8,10 @@
 
 ## Description
 
-> "In the halls of cryptography, truth is what the verifier sees first. But what happens when the executor reads a different story?"
-
+*"In the halls of cryptography, truth is what the verifier sees first. But what happens when the executor reads a different story?"*
 They say packets are streams of truth, consumed in order. But what if order is merely... a suggestion? What if some packets can rewrite the narrative after verification has already looked away? 
-
 **Your mission**: Make the cryptography tell the truth while the system acts on a lie. No keys to crack. No hashes to brute. Just a perfectly valid signature... on a message that was never meant to be.
+
 > Hint: When streams diverge, compressed realities take precedence. 
 
 ## Tags
