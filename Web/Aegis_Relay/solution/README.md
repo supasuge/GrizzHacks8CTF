@@ -1,4 +1,4 @@
-# Solution: SIGNED, SEALED, DECEIVED
+# Solution: Aegis Relay
 
 ## Vulnerability: CVE-2025-47934
 
