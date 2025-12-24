@@ -57,7 +57,7 @@ git checkout -b challenge/crypto/rsa-madness # examle challenge name
 ```bash
    ./new-chal.sh rename -c  -old  -new 
 ``` 
-- **Categories**: `web`, `crypto`, `forensics`, `pwn`, `misc`
+- **Categories**: `web`, `crypto`, `forensics`, `pwn`, `misc`, `osint`
    
 **Example**:
 
