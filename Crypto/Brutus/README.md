@@ -1,4 +1,4 @@
-# Challenge-2
+# Challenge-1
 - **Author:** (your name)
 - **Category:** Crypto
 - **Difficulty:** {Easy | Medium | Hard | Expert}
@@ -10,7 +10,7 @@
 ## Build Instructions
 ```
 cd build
-docker build -t crypto-challenge2 .
+docker build -t crypto-challenge1 .
 ```
 
 ## Running

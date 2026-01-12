@@ -1,7 +1,7 @@
-# Challenge-5
+# Challenge-1
 - **Author:** (your name)
 - **Category:** Crypto
-- **Difficulty:** {Easy | Medium | Hard | Expert}
+- **Difficulty:** {Easy | Medium | Hard | Expert} - TBD
 - **Flag Format:** `GrizzCTF{...}`
 
 ## Description
@@ -10,7 +10,7 @@
 ## Build Instructions
 ```
 cd build
-docker build -t crypto-challenge5 .
+docker build -t crypto-challenge1 .
 ```
 
 ## Running
