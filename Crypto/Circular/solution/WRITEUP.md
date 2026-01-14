@@ -164,9 +164,8 @@ $$
 ## 6. Known Plaintext = Immediate Key Recovery
 
 Because the plaintext is known:
-$$
-p = \text{"Honey, where's my supaaasuit?!"}
-$$
+
+$p = \text{"Honey, where's my supaaasuit?!"}$
 
 And its ciphertext $c_1$
 
