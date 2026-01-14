@@ -17,7 +17,7 @@
 
 Just a lil cmd prompt, just find the flag ;)
 
-+ 1 cookie for deobfuscating the javascript...
+\+ 1 cookie for deobfuscating the javascript...
 
 ## Build Instructions
 ```
