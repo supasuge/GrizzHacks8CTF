@@ -223,12 +223,6 @@ Flag obtained.
 
 ## 8. Why This Always Breaks (Example diagrams)
 
-![Image](https://www.researchgate.net/publication/346116399/figure/fig10/AS%3A11431281179023411%401691144763529/The-proposed-block-diagram-of-AES-with-pipeline-and-loop-unrolled-technique-a-Loop.png)
-
-![Image](https://www.mdpi.com/applsci/applsci-15-10682/article_deploy/html/images/applsci-15-10682-g001-550.jpg)
-
-![Image](https://www.mdpi.com/applsci/applsci-15-10682/article_deploy/html/images/applsci-15-10682-g002.png)
-
 **Fatal properties:**
 
 - Linear operation (convolution)
