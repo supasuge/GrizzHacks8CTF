@@ -116,7 +116,7 @@ Key property (convolution theorem):
 
 $$
 \text{NTT}(\mathbf{a} \circledast \mathbf{b}) = 
-\text{NTT}(\mathbf{a}) \odot \text{NTT}(\mathbd{b})
+\text{NTT}(\mathbf{a}) \odot \text{NTT}(\mathbf{b})
 $$
 
 Whereas $\odot$ means element-wise multiplcation
