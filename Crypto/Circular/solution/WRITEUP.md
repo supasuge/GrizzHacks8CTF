@@ -242,7 +242,7 @@ That is the worst possible thing you can do in cryptography.
 - [x] Compute $\hat{p}$ from known plaintext
 - [x] compute $\hat{c}_1$
 - [x] Recover $\hat{k}_{\text{eff}}$ by division per bin
-- [x] Compute $\hat{p}^{\text{flag}}$ by dividing $\hat{c}^{\text{(flag)}}
+- [x] Compute $\hat{p}^{\text{flag}}$ by dividing $\hat{c}^{\text{(flag)}}$
 - [x] iNTT -> 
 bytes -> flag
 
@@ -275,6 +275,12 @@ cd Circular/solution/
 python solver.py                    
 GRIZZ{c1rcul4nt_m4t_l1n34r_r3c0v3ry}
 ```
+
+Thanks for reading, please reach out to me on discord if you have any questions!
+
+
+<img width="546" height="894" alt="image" src="https://github.com/user-attachments/assets/765af27b-b8d1-4120-9fba-9f81512431a8" />
+
 
 ---
 
