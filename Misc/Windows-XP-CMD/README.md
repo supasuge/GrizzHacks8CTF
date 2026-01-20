@@ -1,29 +1,27 @@
-# Challenge-1
+# WindowsXP
 - **Author:** Evan Pardon | [supasuge](https://github.com/supasuge)
 - **Category:** Misc
 - **Difficulty:** Easy
-- **Flag Format:** `GrizzCTF{...}`
-
-## TODO
-
-> [!IMPORTANT]
-> Still need to do the `Dockerfile` for deployment &| `docker-compose.yml`....
-
--  We get there, when we get there. 
-- I run on Hawaiin Time.
-  - Take it or leave it <3
+- **Flag Format:** `Grizz{...}`
 
 ## Description
 
-Just a lil cmd prompt, just find the flag ;)
+It's only a lil cmd prompt, just find the flag ;)
 
 \+ 1 cookie for deobfuscating the javascript...
 
 ## Build Instructions
 ```
 cd build
-docker build -t misc-challenge1 .
+docker build -t wxp-misc .
 ```
 
 ## Running
-Document how to run the challenge here.
+
+```bash
+docker run --rm -p 5000:5000
+```
+
+## Handout
+
+**No handout for this challenge**
