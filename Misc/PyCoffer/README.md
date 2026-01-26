@@ -22,3 +22,5 @@ docker run -d --rm -p 1337:1337 pycoffer:latest
 ```
 GRIZZ{.....}
 ```
+
+**No handout needed for this challenge**.
