@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-muted text-decoration-none">Archive</a></li>
+        <li class="breadcrumb-item active text-honey" aria-current="page">{{ ref }}</li>
+      </ol>
+    </nav>
+
+    <div class="card glass-card overflow-hidden">
+      <div class="card-header bg-transparent border-bottom border-success-subtle p-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="badge archive-tag mb-2">Authenticated View</span>
+            <h2 class="h4 mb-0">Registry Item: {{ ref }}</h2>
+          </div>
+          <div class="text-end">
+             <div class="small text-muted">Checksum: <span class="font-monospace">OK</span></div>
+             <div class="small text-muted">Format: <span class="font-monospace">MARKDOWN/MD</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-4 p-md-5">
+        <article class="render-content">
+          {{ rendered|safe }}
+        </article>
+      </div>
+      <div class="card-footer bg-transparent border-top border-success-subtle p-4 text-center">
+        <p class="small text-muted mb-0">End of Transmission — Grizzly Grove Archive Division</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

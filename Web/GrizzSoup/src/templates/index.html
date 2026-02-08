@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card glass-card p-4 p-md-5">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h6 class="text-honey mb-2" style="color: var(--honey); letter-spacing: 0.2em; text-transform: uppercase;">Central Repository</h6>
+          <h1 class="display-5 mb-4">Retrieve a Recipe Scroll</h1>
+          
+          <form action="{{ url_for('slurp') }}" method="get" class="mb-5">
+            <div class="input-group input-group-lg">
+              <span class="input-group-text bg-transparent border-end-0" style="color: var(--honey)">#</span>
+              <input name="ladle" class="form-control border-start-0 ps-0" 
+                     placeholder="Enter reference (e.g., classic/soup_001)" autocomplete="off">
+              <button class="btn btn-archive border-start-0" type="submit">Execute Fetch</button>
+            </div>
+          </form>
+
+          <div class="mt-4">
+            <p class="small text-muted mb-3 text-uppercase fw-bold" style="letter-spacing: 0.1em;">Frequent Requests</p>
+            <div class="d-flex flex-wrap gap-2">
+              {% for r in featured %}
+                <a class="badge archive-tag text-decoration-none" href="{{ url_for('slurp') }}?ladle={{ r }}">{{ r }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 d-none d-md-block text-center">
+            <div style="font-size: 8rem; opacity: 0.1;">🐻</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
