@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="panel">
+  <div class="panelhead">
+    <div>
+      <h1>Reports</h1>
+      <p class="muted">Ticketed. One-time. Like a bear’s patience.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    {% if not ticket %}
+      <p class="muted">Enter a ticket to retrieve your one-time report.</p>
+      <form method="get" action="{{ url_for('reports') }}">
+        <input class="mono" name="ticket"
+               style="width:100%; padding:10px; border-radius:12px; border:1px solid rgba(180,255,210,.16); background:rgba(0,0,0,.25); color:rgba(230,255,242,.92);"
+               placeholder="ticket..." />
+        <div class="pillrow" style="margin-top:12px;">
+          <button class="pill" type="submit" style="cursor:pointer;">Fetch</button>
+        </div>
+      </form>
+    {% else %}
+      <div class="muted" style="margin-bottom:8px;">
+        Ticket: <span class="mono">{{ ticket }}</span>
+      </div>
+
+      {% if consumed %}
+        <div class="hint">This ticket has already been redeemed.</div>
+      {% elif report %}
+        <div class="hint">
+          <strong>One-time report content:</strong>
+          <div class="mono" style="margin-top:10px; white-space:pre-wrap; word-break:break-word;">{{ report }}</div>
+          <div class="muted" style="margin-top:10px;">This report is now cleared.</div>
+        </div>
+      {% else %}
+        <div class="hint">
+          Status: <span class="mono">{{ status }}</span><br/>
+          No report yet. The bot hasn’t visited or your payload broke.
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

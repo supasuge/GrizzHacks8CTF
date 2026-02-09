@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="panel">
+  <div class="panelhead">
+    <div>
+      <h1>Forest Ops Console</h1>
+      <p class="muted">
+        Welcome operator. The CSP is strict. The templates escape HTML. The bears are confident. Please enjoy your totally safe theme system.
+      </p>
+    </div>
+
+    <div class="moodchip">
+      <div class="label">ACTIVE MOOD</div>
+      <div class="value" data-mood-label>DEFAULT</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Change Mood</h2>
+      <p class="muted">
+        Choose a “harmless” mood. This loads a theme script.
+        Scripts are safe when they only change colors. Right?.... Right?
+      </p>
+
+      <div class="pillrow">
+        {% for key, name in moods %}
+          <a class="pill" href="/?mood={{ key }}">{{ name }}</a>
+        {% endfor %}
+      </div>
+
+      <div class="hint">
+        Note: Our CSP forbids inline scripts, so you’re safe now. Also we dynamically load scripts from a URL parameter because we enjoy living dangerously.
+
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Ranger Area</h2>
+      <p class="muted">
+        The Bear Den is restricted. If you aren’t a ranger, you won’t see it.
+        (And if you are a ranger, you probably shouldn’t browse user-generated links. But you will.)
+      </p>
+
+      <div class="actions">
+        <a class="btn" href="{{ url_for('bear_den') }}">Enter Bear Den</a>
+        <a class="btn ghost" href="{{ url_for('submit_get') }}">Submit a Link</a>
+      </div>
+
+      <div class="hint">
+        Operational wisdom: If you ever see an endpoint that returns JavaScript, you should definitely let users decide its URL. That’s how modern web works. Allegedly.
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

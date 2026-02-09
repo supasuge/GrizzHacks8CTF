@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="panel">
+  <div class="panelhead">
+    <div>
+      <h1>Bear Den</h1>
+      <p class="muted">Ranger-only diagnostics. Nothing sensitive. Definitely.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ranger Diagnostic Flag</h2>
+    <p class="muted">
+      If you are not supposed to see this, please close your browser and pretend you never existed.
+    </p>
+    <div class="flagbox" id="flag">{{ flag }}</div>
+  </div>
+</section>
+
+{% endblock %}
