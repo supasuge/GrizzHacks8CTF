@@ -1,4 +1,4 @@
-```md
+
 # SOLUTION.md — GRIZZ GROVE: “CSP solved XSS” (it didn’t)
 
 > **TL;DR**: CSP isn’t a magic spell. It’s a policy.  
