@@ -1,0 +1,38 @@
+worker_processes  1;
+
+events { worker_connections 1024; }
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    server {
+        listen 80;
+        server_name _;
+
+        root /var/www/html;
+
+        location / {
+            add_header Content-Type text/plain;
+            return 200 "PKI Challenge: TLS is configured. If your client can't build the chain, investigate the certificate metadata.\n";
+        }
+
+        location /.well-known/pki/ {
+            autoindex on;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name _;
+
+        # Misconfiguration: only leaf cert, no intermediate chain.
+        ssl_certificate     {{LEAF_CERT}};
+        ssl_certificate_key {{LEAF_KEY}};
+
+        location / {
+            add_header Content-Type text/plain;
+            return 200 "Welcome. This service uses TLS. The chain might not be what you expect.\n";
+        }
+    }
+}
