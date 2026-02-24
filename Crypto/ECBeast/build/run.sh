@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run --rm -p 1337:1337 ecbeast:latest
+docker run --rm -d -p 5337:5337 ecbeast:latest
