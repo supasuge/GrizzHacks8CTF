@@ -4,7 +4,7 @@ import secrets
 from typing import List, Tuple
 import sys
 
-flag = open("flag.txt", "rb").read().strip()
+flag = (lambda f="flag.txt": (open(f,"rb").read().strip()))() if __import__("os").path.isfile("flag.txt") else b"GRIZZ{FAKE_FLAG}"
 
 BANNER = r"""
   _____         ____                    __   
