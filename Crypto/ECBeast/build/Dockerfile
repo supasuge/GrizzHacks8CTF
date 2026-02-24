@@ -32,7 +32,7 @@ RUN chmod 555 /challenge/chal.py \
  && chown -R root:ctf /challenge \
  && chmod 750 /challenge
 
-EXPOSE 1337
+EXPOSE 5337
 
 CMD ["/usr/bin/supervisord"]
 
