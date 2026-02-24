@@ -228,7 +228,7 @@ def main() -> int:
 
     # Generate a per-container flag by default.
     # If you want static flags, replace this with a constant or ENV var.
-    flag = f"GRIZZ{{pki_aia_chain_{secrets.token_hex(12)}}}"
+    flag = "GRIZZpki_aia_chain_1n_th3_f132h}"
 
     root_key, root_cert = make_root_ca()
     int_key, int_cert = make_intermediate_ca(root_key, root_cert, flag)
