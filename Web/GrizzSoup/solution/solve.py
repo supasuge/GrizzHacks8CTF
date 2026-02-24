@@ -51,8 +51,8 @@ def main() -> int:
 
     # Fallback: sometimes the flag is plain text but wrapped in <p>…</p>
     # Print a small slice so you can spot it quickly.
-    print("[!] Flag pattern not found. Showing a snippet near 'HTB'/'flag' if present.")
-    idx = min([i for i in (r.text.lower().find("htb{"), r.text.lower().find("flag{"), r.text.lower().find("ctf{")) if i != -1] or [0])
+    print("[!] Flag pattern not found. Showing a snippet near 'GRIZZ'/'flag' if present.")
+    idx = min([i for i in (r.text.lower().find("grizz{"), r.text.lower().find("grizz{"), r.text.lower().find("grizz{")) if i != -1] or [0])
     print(r.text[idx:idx+800])
     return 1
 
