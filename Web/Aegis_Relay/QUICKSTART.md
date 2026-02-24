@@ -1,6 +1,7 @@
 # Quick Start Guide
 
-**Author**: [supasuge](https:/github.com/supasuge) | [Evan Pardon](https://linkedin.com/in/evan-pardon)
+- **Author**: [supasuge](https:/github.com/supasuge) | [Evan Pardon](https://linkedin.com/in/evan-pardon)
+
 ## For Challenge Organizers
 
 **Handout for participants (Source code)**
