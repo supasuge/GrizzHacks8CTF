@@ -1,0 +1,82 @@
+:root{
+  --surface: rgba(255,255,255,.06);
+  --surface-strong: rgba(255,255,255,.08);
+  --border: rgba(255,255,255,.12);
+  --border-strong: rgba(255,255,255,.16);
+}
+
+* { box-sizing: border-box; }
+
+.avatar-frame {
+  box-shadow: 0 0 50px rgba(99,102,241,.18);
+}
+
+.glass{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.glass-strong{
+  background: var(--surface-strong);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+}
+
+.btn-ghost{
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+.btn-ghost:hover{
+  background: rgba(255,255,255,.10);
+}
+
+.animated-gradient{
+  background: linear-gradient(-45deg, #60a5fa, #a78bfa, #f472b6, #38bdf8);
+  background-size: 400% 400%;
+  animation: gradient-flow 12s ease infinite;
+}
+@keyframes gradient-flow{
+  0%,100%{ background-position: 0% 50%; }
+  50%{ background-position: 100% 50%; }
+}
+
+/* Ambient blobs */
+.blob{
+  position:absolute;
+  width: 26rem;
+  height: 26rem;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: .28;
+  animation: floaty 10s ease-in-out infinite;
+}
+.blob-a{ left: 10%; top: 18%; background: #3b82f6; }
+.blob-b{ right: 8%; bottom: 16%; background: #a855f7; animation-delay: -3s; }
+.blob-c{ left: 45%; bottom: 10%; background: #ec4899; animation-delay: -6s; }
+@keyframes floaty{
+  0%,100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-18px) translateX(12px); }
+}
+
+/* “Shaped components” vibe (simple + browser-friendly) */
+.shape-card{
+  background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(168,85,247,.9));
+  box-shadow: 0 0 40px rgba(59,130,246,.25);
+}
+
+.shape-hexagon{
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.shape-diamond{
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.shape-badge{
+  clip-path: polygon(50% 0%, 65% 20%, 90% 15%, 80% 35%, 100% 50%,
+                     80% 65%, 90% 85%, 65% 80%, 50% 100%, 35% 80%,
+                     10% 85%, 20% 65%, 0% 50%, 20% 35%, 10% 15%, 35% 20%);
+  background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(244,114,182,.9));
+  box-shadow: 0 0 40px rgba(236,72,153,.20);
+}

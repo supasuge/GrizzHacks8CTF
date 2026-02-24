@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% set title = "Nebula Vault — Profile" %}
+
+{% block content %}
+  <section class="grid lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 glass-strong rounded-3xl p-8 border border-white/10">
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <div>
+          <div class="text-sm text-white/60 font-semibold">Callsign</div>
+          <div class="text-3xl font-black tracking-tight">{{ username }}</div>
+        </div>
+        <div class="shape-badge w-14 h-14 flex items-center justify-center">
+          <i class="fa-solid fa-id-badge text-xl"></i>
+        </div>
+      </div>
+
+      {% if not has_avatar %}
+        <div class="glass rounded-2xl p-5 border border-white/10">
+          <div class="flex items-start gap-3">
+            <i class="fa-solid fa-arrow-up-from-bracket text-blue-300 mt-1"></i>
+            <div>
+              <div class="font-bold">Avatar required</div>
+              <div class="text-white/60 text-sm">
+                Upload a profile image to activate your badge and access the Vault viewer.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+          <label class="block text-sm text-white/70 font-semibold">Upload avatar</label>
+          <input
+            type="file"
+            name="avatar"
+            accept="image/*"
+            class="w-full px-5 py-3 rounded-2xl bg-black/30 border border-white/10"
+            required
+          />
+          <button
+            class="px-6 py-3 rounded-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 transition"
+            type="submit"
+          >
+            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Forge Badge
+          </button>
+        </form>
+      {% else %}
+        <div class="glass rounded-2xl p-5 border border-white/10">
+          <div class="flex items-start gap-3">
+            <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
+            <div>
+              <div class="font-bold">Badge activated</div>
+              <div class="text-white/60 text-sm">
+                Avatar is bound to your session and expires in
+                <span class="font-mono text-white/80">{{ avatar_remaining }}s</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 grid md:grid-cols-2 gap-6 items-start">
+          <!-- Secure per-session avatar display -->
+          <div class="glass-strong rounded-3xl p-6 border border-white/10">
+            <div class="flex items-center justify-between mb-4">
+              <div class="font-bold">
+                <i class="fa-solid fa-user-astronaut text-blue-300 mr-2"></i>Your Avatar
+              </div>
+              <span class="text-xs text-white/50">secure • session-bound</span>
+            </div>
+
+            <div class="avatar-frame rounded-3xl overflow-hidden border border-white/10 bg-black/30">
+              <img
+                src="{{ url_for('my_avatar') }}"
+                alt="Uploaded avatar"
+                class="w-full h-64 object-cover"
+              />
+            </div>
+
+            <div class="text-xs text-white/50 mt-3">
+              Served via <span class="font-mono">/me/avatar</span> (no filename in URL).
+            </div>
+          </div>
+
+          <!-- Keep the CTF hint + link to Vault viewer (intentionally vulnerable) -->
+          <div class="space-y-4">
+            <div class="glass-strong rounded-2xl p-5 border border-white/10">
+              <div class="font-bold">
+                <i class="fa-solid fa-vault text-purple-300 mr-2"></i>Artifact Vault
+              </div>
+              <div class="text-white/55 text-xs mt-1">
+                The vault viewer is separate from your secure avatar display.
+              </div>
+            </div>
+
+            <div class="glass-strong rounded-2xl p-5 border border-white/10">
+              <div class="font-bold">
+                <i class="fa-solid fa-circle-info text-pink-300 mr-2"></i>Hint
+              </div>
+              <div class="text-white/55 text-xs mt-1">
+                The Vault viewer takes a “filename” from the URL. Think about paths, not names.
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <aside class="glass rounded-3xl p-8 border border-white/10">
+      <div class="inline-flex items-center gap-3 glass px-5 py-3 rounded-full mb-6">
+        <i class="fa-solid fa-terminal text-pink-300"></i>
+        <div class="text-sm font-black tracking-tight">Operator Notes</div>
+      </div>
+
+      <div class="text-white/70 text-sm leading-relaxed space-y-3">
+        <p>Your avatar is session-scoped and expires automatically.</p>
+        <p>The Vault route is where the bug lives.</p>
+      </div>
+    </aside>
+  </section>
+{% endblock %}
