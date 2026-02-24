@@ -8,6 +8,6 @@ WORKDIR /app
 COPY sandbox.py .
 COPY flag.txt .
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-EXPOSE 1337
+EXPOSE 3337
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
