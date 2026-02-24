@@ -19,7 +19,7 @@ docker build -t wxp-misc .
 ## Running
 
 ```bash
-docker run --rm -p 5000:5000
+docker run --rm -d -p 5000:5000 wxp-misc:latest
 ```
 
 ## Handout
