@@ -27,7 +27,7 @@ docker run --rm -p 1337:1337 ecbeast:latest
 
 ```bash
 cd ECBeast/handout
-tar -cJf ecbeast-handout.tar.tar -cJf ecbeast-handout.tar.xz chal.py flag.example.txt supervisord.conf Dockerfilexz chal.py flag.example.txt supervisord.conf Dockerfile
+tar -cJf ecbeast-handout.tar.xz chal.py flag.example.txt supervisord.conf Dockerfile
 # output
 ecbeast-handout.tar.xz
 |
