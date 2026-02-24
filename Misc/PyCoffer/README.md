@@ -14,7 +14,7 @@ cd src && docker build -t pycoffer:latest .
 ## Running the challenge container
 
 ```bash
-docker run -d --rm -p 1337:1337 pycoffer:latest
+docker run -d --rm -p 3337:3337 pycoffer:latest
 ```
 
 ### Flag format
