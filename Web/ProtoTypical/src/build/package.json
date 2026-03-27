@@ -1,0 +1,13 @@
+{
+  "name": "proto-palooza",
+  "version": "2.0.0",
+  "description": "Prototype pollution CTF challenge",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  }
+}

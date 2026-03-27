@@ -1,0 +1,221 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+RUN_CACHE_FILE=".runcache"
+DEFAULT_PORT="3000"
+SCRIPT_NAME="$(basename "$0")"
+
+err() {
+    echo "[!] $*" >&2
+}
+
+info() {
+    echo "[*] $*"
+}
+
+die() {
+    err "$*"
+    exit 1
+}
+
+usage() {
+    cat <<EOF
+Usage:
+  $SCRIPT_NAME build [image-name]
+  $SCRIPT_NAME run [image-name] [host-port]
+  $SCRIPT_NAME rebuild [image-name]
+  $SCRIPT_NAME stop <container-name>
+  $SCRIPT_NAME rm <container-name>
+  $SCRIPT_NAME logs <container-name>
+
+Examples:
+  $SCRIPT_NAME build
+  $SCRIPT_NAME build proto-palooza
+  $SCRIPT_NAME run
+  $SCRIPT_NAME run proto-palooza 3000
+  $SCRIPT_NAME rebuild proto-palooza
+  $SCRIPT_NAME stop proto-palooza
+  $SCRIPT_NAME rm proto-palooza
+  $SCRIPT_NAME logs proto-palooza
+EOF
+}
+
+require_cmd() {
+    command -v "$1" >/dev/null 2>&1 || die "Required command not found: $1"
+}
+
+require_docker() {
+    require_cmd docker
+    docker info >/dev/null 2>&1 || die "Docker is not running or is not accessible"
+}
+
+random_name() {
+    printf 'proto-%s' "$(openssl rand -hex 4)"
+}
+
+read_cached_name() {
+    if [[ -f "$RUN_CACHE_FILE" ]]; then
+        cat "$RUN_CACHE_FILE"
+    else
+        return 1
+    fi
+}
+
+write_cached_name() {
+    printf '%s\n' "$1" > "$RUN_CACHE_FILE"
+}
+
+resolve_name() {
+    local provided_name="${1:-}"
+
+    if [[ -n "$provided_name" ]]; then
+        echo "$provided_name"
+        return 0
+    fi
+
+    if read_cached_name >/dev/null 2>&1; then
+        read_cached_name
+        return 0
+    fi
+
+    local generated
+    generated="$(random_name)"
+    write_cached_name "$generated"
+    echo "$generated"
+}
+
+image_exists() {
+    local image_name="$1"
+    docker image inspect "${image_name}:latest" >/dev/null 2>&1
+}
+
+container_exists() {
+    local container_name="$1"
+    docker container inspect "$container_name" >/dev/null 2>&1
+}
+
+container_running() {
+    local container_name="$1"
+    [[ "$(docker inspect -f '{{.State.Running}}' "$container_name" 2>/dev/null || true)" == "true" ]]
+}
+
+build_image() {
+    local image_name="$1"
+    info "Building image ${image_name}:latest"
+    docker build -t "${image_name}:latest" .
+    write_cached_name "$image_name"
+    info "Built image: ${image_name}:latest"
+}
+
+remove_existing_container_if_stopped() {
+    local container_name="$1"
+    if container_exists "$container_name"; then
+        if container_running "$container_name"; then
+            die "Container '$container_name' already exists and is running"
+        fi
+        info "Removing existing stopped container '$container_name'"
+        docker rm "$container_name" >/dev/null
+    fi
+}
+
+run_container() {
+    local image_name="$1"
+    local host_port="$2"
+
+    image_exists "$image_name" || die "Image '${image_name}:latest' does not exist. Build it first."
+
+    if docker ps --format '{{.Ports}}' | grep -qE "(^|,)0\.0\.0\.0:${host_port}->|(^|,):::${host_port}->"; then
+        die "Host port ${host_port} appears to already be in use by another container"
+    fi
+
+    remove_existing_container_if_stopped "$image_name"
+
+    info "Starting container '$image_name' on port ${host_port}->3000"
+    docker run -d \
+        --restart unless-stopped \
+        --name "$image_name" \
+        -p "${host_port}:3000" \
+        "${image_name}:latest" >/dev/null
+
+    write_cached_name "$image_name"
+    info "Container started: $image_name"
+    info "Visit: http://127.0.0.1:${host_port}/"
+}
+
+stop_container() {
+    local container_name="$1"
+    container_exists "$container_name" || die "Container '$container_name' does not exist"
+    if container_running "$container_name"; then
+        info "Stopping container '$container_name'"
+        docker stop "$container_name" >/dev/null
+        info "Stopped: $container_name"
+    else
+        info "Container '$container_name' is not running"
+    fi
+}
+
+remove_container() {
+    local container_name="$1"
+    container_exists "$container_name" || die "Container '$container_name' does not exist"
+    info "Removing container '$container_name'"
+    docker rm -f "$container_name" >/dev/null
+    info "Removed: $container_name"
+}
+
+show_logs() {
+    local container_name="$1"
+    container_exists "$container_name" || die "Container '$container_name' does not exist"
+    docker logs -f "$container_name"
+}
+
+main() {
+    require_docker
+    require_cmd openssl
+
+    local action="${1:-}"
+    local name_arg="${2:-}"
+    local port_arg="${3:-$DEFAULT_PORT}"
+
+    case "$action" in
+        build)
+            local image_name
+            image_name="$(resolve_name "$name_arg")"
+            build_image "$image_name"
+            ;;
+        run)
+            local image_name
+            image_name="$(resolve_name "$name_arg")"
+            run_container "$image_name" "$port_arg"
+            ;;
+        rebuild)
+            local image_name
+            image_name="$(resolve_name "$name_arg")"
+            build_image "$image_name"
+            if container_exists "$image_name"; then
+                info "Replacing existing container '$image_name'"
+                docker rm -f "$image_name" >/dev/null
+            fi
+            run_container "$image_name" "$port_arg"
+            ;;
+        stop)
+            [[ -n "$name_arg" ]] || die "You must supply a container name for 'stop'"
+            stop_container "$name_arg"
+            ;;
+        rm)
+            [[ -n "$name_arg" ]] || die "You must supply a container name for 'rm'"
+            remove_container "$name_arg"
+            ;;
+        logs)
+            [[ -n "$name_arg" ]] || die "You must supply a container name for 'logs'"
+            show_logs "$name_arg"
+            ;;
+        ""|-h|--help|help)
+            usage
+            ;;
+        *)
+            die "Unknown action: $action"
+            ;;
+    esac
+}
+
+main "$@"

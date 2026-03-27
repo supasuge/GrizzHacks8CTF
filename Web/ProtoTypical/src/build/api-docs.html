@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proto-Palooza API Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#0a0c10;--bg-card:#11141b;--bg-card-hover:#161a24;--bg-input:#0d0f15;
+  --accent-cyan:#00e5ff;--accent-mint:#39ffb0;--accent-coral:#ff6b6b;--accent-amber:#ffb84d;--accent-purple:#b57aff;
+  --text-primary:#e2e8f0;--text-secondary:#8892a4;--text-muted:#4a5568;
+  --border-subtle:rgba(255,255,255,0.06);--border-glow:rgba(0,229,255,0.15);
+  --font-mono:'JetBrains Mono',monospace;--font-display:'Space Grotesk',sans-serif;--font-prose:'Crimson Pro',serif;
+  --method-get:#39ffb0;--method-post:#ffb84d;--method-get-bg:rgba(57,255,176,0.08);--method-post-bg:rgba(255,184,77,0.08);
+  --method-get-border:rgba(57,255,176,0.2);--method-post-border:rgba(255,184,77,0.2);
+}
+html{font-size:15px;scroll-behavior:smooth}
+body{background:var(--bg-deep);color:var(--text-primary);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
+::selection{background:var(--accent-cyan);color:var(--bg-deep)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:3px}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:rgba(0,229,255,0.04);z-index:9998;pointer-events:none;animation:scan 8s linear infinite}
+@keyframes scan{0%{top:-2px}100%{top:100vh}}
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background-image:linear-gradient(rgba(0,229,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.02) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+header{padding:3rem 2rem 2rem;max-width:960px;margin:0 auto;position:relative}
+header::after{content:'';position:absolute;bottom:0;left:2rem;right:2rem;height:1px;background:linear-gradient(90deg,transparent,var(--accent-cyan),transparent)}
+.logo-cluster{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.logo-glyph{width:48px;height:48px;border:1.5px solid var(--accent-cyan);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;
+  background:linear-gradient(135deg,rgba(0,229,255,0.06),transparent);
+  box-shadow:0 0 20px rgba(0,229,255,0.08),inset 0 0 20px rgba(0,229,255,0.04)}
+.logo-glyph::before{content:'{}';font-family:var(--font-mono);font-size:18px;font-weight:600;color:var(--accent-cyan)}
+.logo-text{font-family:var(--font-display);font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;
+  background:linear-gradient(135deg,var(--accent-cyan),var(--accent-mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tagline{font-family:var(--font-prose);font-size:1.25rem;font-style:italic;color:var(--text-secondary);font-weight:300;letter-spacing:0.01em;margin-bottom:1rem;line-height:1.6}
+.meta-row{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center}
+.meta-pill{display:inline-flex;align-items:center;gap:0.4rem;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.75rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;border:1px solid var(--border-subtle);color:var(--text-secondary)}
+.meta-pill .dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.dot-live{background:var(--accent-mint)}
+.dot-ver{background:var(--accent-purple)}
+.dot-auth{background:var(--accent-coral)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.base-url{margin-top:1.5rem;padding:0.6rem 1rem;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:8px;display:inline-flex;align-items:center;gap:0.5rem;font-size:0.85rem;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.base-url:hover{border-color:var(--border-glow);box-shadow:0 0 12px rgba(0,229,255,0.06)}
+.base-url .label{color:var(--text-muted);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em}
+.base-url code{color:var(--accent-cyan)}
+main{max-width:960px;margin:0 auto;padding:2rem}
+.section-label{font-family:var(--font-display);font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.75rem}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border-subtle)}
+.endpoint{margin-bottom:1.25rem;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden;transition:border-color .3s,box-shadow .3s;background:var(--bg-card)}
+.endpoint:hover{border-color:var(--border-glow);box-shadow:0 0 30px rgba(0,229,255,0.04)}
+.endpoint.expanded{border-color:var(--border-glow)}
+.ep-header{display:flex;align-items:center;gap:0.75rem;padding:0.9rem 1.25rem;cursor:pointer;user-select:none;transition:background .2s}
+.ep-header:hover{background:var(--bg-card-hover)}
+.method-badge{font-family:var(--font-mono);font-size:0.7rem;font-weight:700;letter-spacing:0.08em;padding:0.2rem 0.65rem;border-radius:6px;min-width:52px;text-align:center}
+.method-badge.get{color:var(--method-get);background:var(--method-get-bg);border:1px solid var(--method-get-border)}
+.method-badge.post{color:var(--method-post);background:var(--method-post-bg);border:1px solid var(--method-post-border)}
+.ep-path{font-size:0.9rem;font-weight:500;color:var(--text-primary);flex:1}
+.ep-summary{font-family:var(--font-prose);font-size:0.85rem;color:var(--text-secondary);font-weight:300;font-style:italic}
+.ep-chevron{color:var(--text-muted);transition:transform .3s;font-size:0.7rem}
+.endpoint.expanded .ep-chevron{transform:rotate(90deg);color:var(--accent-cyan)}
+.ep-body{display:none;border-top:1px solid var(--border-subtle);padding:1.25rem;animation:slideDown .3s ease}
+.endpoint.expanded .ep-body{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.ep-desc{font-family:var(--font-prose);font-size:0.95rem;line-height:1.7;color:var(--text-secondary);margin-bottom:1.25rem;font-weight:300}
+.sub-label{font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.6rem;margin-top:1rem}
+.response-block,.request-block{background:var(--bg-input);border:1px solid var(--border-subtle);border-radius:8px;padding:0.9rem 1rem;position:relative;overflow:hidden}
+.response-block pre,.request-block pre{font-family:var(--font-mono);font-size:0.78rem;line-height:1.65;color:var(--text-primary);white-space:pre-wrap;word-break:break-word}
+.json-key{color:var(--accent-cyan)}
+.json-str{color:var(--accent-mint)}
+.json-num{color:var(--accent-amber)}
+.json-bool{color:var(--accent-purple)}
+.json-null{color:var(--text-muted)}
+.status-badge{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.7rem;font-weight:600;letter-spacing:0.06em;padding:0.15rem 0.55rem;border-radius:4px;margin-bottom:0.6rem}
+.status-200{color:var(--accent-mint);background:rgba(57,255,176,0.08);border:1px solid rgba(57,255,176,0.15)}
+.status-201{color:var(--accent-cyan);background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15)}
+.status-403{color:var(--accent-coral);background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.15)}
+.status-400{color:var(--accent-amber);background:rgba(255,184,77,0.08);border:1px solid rgba(255,184,77,0.15)}
+.try-it-btn{display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;padding:0.5rem 1.2rem;font-family:var(--font-mono);font-size:0.75rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--bg-deep);background:var(--accent-cyan);border:none;border-radius:8px;cursor:pointer}
+.curl-block{margin-top:0.75rem;background:var(--bg-input);border:1px solid var(--border-subtle);border-radius:8px;padding:0.75rem 1rem;font-size:0.75rem;line-height:1.6;position:relative;display:none}
+.curl-block.show{display:block;animation:slideDown .3s ease}
+.curl-block code{color:var(--text-secondary)}
+.copy-btn{position:absolute;top:0.5rem;right:0.5rem;background:transparent;border:1px solid var(--border-subtle);color:var(--text-muted);font-family:var(--font-mono);font-size:0.65rem;padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer}
+.copy-btn:hover{color:var(--accent-cyan);border-color:var(--border-glow)}
+.schema-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin-top:0.5rem}
+.schema-table th{text-align:left;color:var(--text-muted);font-weight:600;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;padding:0.5rem 0.75rem;border-bottom:1px solid var(--border-subtle)}
+.schema-table td{padding:0.5rem 0.75rem;border-bottom:1px solid var(--border-subtle);vertical-align:top}
+.schema-table tr:last-child td{border-bottom:none}
+.type-tag{font-size:0.7rem;color:var(--accent-purple);background:rgba(181,122,255,0.08);padding:0.1rem 0.4rem;border-radius:3px}
+footer{max-width:960px;margin:3rem auto 0;padding:2rem;border-top:1px solid var(--border-subtle);text-align:center}
+footer p{font-family:var(--font-prose);font-size:0.85rem;color:var(--text-muted);font-weight:300;font-style:italic;line-height:1.8}
+@media(max-width:640px){
+  header,main{padding-left:1rem;padding-right:1rem}
+  .ep-summary{display:none}
+  .meta-row{gap:0.75rem}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="scanline"></div>
+<div class="grid-bg"></div>
+
+<header>
+  <div class="logo-cluster">
+    <div class="logo-glyph"></div>
+    <div class="logo-text">Proto-Palooza</div>
+  </div>
+  <p class="tagline">“Internal user settings, preferences, notifications, and profile management — all behind one neat little API.”</p>
+  <div class="meta-row">
+    <span class="meta-pill"><span class="dot dot-live"></span>Live</span>
+    <span class="meta-pill"><span class="dot dot-ver"></span>v1.2.0</span>
+    <span class="meta-pill"><span class="dot dot-auth"></span>Sessionless Demo</span>
+  </div>
+  <div class="base-url" onclick="copyBase()" title="Click to copy">
+    <span class="label">Base URL</span>
+    <code id="base-url-text">http://localhost:3000</code>
+  </div>
+</header>
+
+<main>
+  <div class="section-label">Endpoints</div>
+
+  <div class="endpoint" id="ep-root">
+    <div class="ep-header" onclick="toggle('ep-root')">
+      <span class="method-badge get">GET</span>
+      <span class="ep-path">/</span>
+      <span class="ep-summary">Service index</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Returns general service metadata and a map of available routes.</p>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"message"</span>: <span class="json-str">"Welcome to Proto-Palooza!"</span>,
+  <span class="json-key">"version"</span>: <span class="json-str">"1.2.0"</span>,
+  <span class="json-key">"service"</span>: <span class="json-str">"user-settings-api"</span>
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-health">
+    <div class="ep-header" onclick="toggle('ep-health')">
+      <span class="method-badge get">GET</span>
+      <span class="ep-path">/health</span>
+      <span class="ep-summary">Health check</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Basic liveness probe for orchestration and container monitoring.</p>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"ok"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"service"</span>: <span class="json-str">"proto-palooza"</span>,
+  <span class="json-key">"version"</span>: <span class="json-str">"1.2.0"</span>
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-user">
+    <div class="ep-header" onclick="toggle('ep-user')">
+      <span class="method-badge get">GET</span>
+      <span class="ep-path">/user</span>
+      <span class="ep-summary">Current profile record</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Returns the user object associated with the current client session model.</p>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"user"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-str">"usr_x8d2n4zf"</span>,
+    <span class="json-key">"username"</span>: <span class="json-str">"guest_x7k2m9"</span>,
+    <span class="json-key">"bio"</span>: <span class="json-str">"Just a regular user."</span>,
+    <span class="json-key">"theme"</span>: <span class="json-str">"dark"</span>,
+    <span class="json-key">"preferences"</span>: { ... }
+  }
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-pref-get">
+    <div class="ep-header" onclick="toggle('ep-pref-get')">
+      <span class="method-badge get">GET</span>
+      <span class="ep-path">/user/preferences</span>
+      <span class="ep-summary">Preference object</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Fetches the nested user preference object used by the dashboard and editor surfaces.</p>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"preferences"</span>: {
+    <span class="json-key">"editorMode"</span>: <span class="json-str">"vim"</span>,
+    <span class="json-key">"dashboardLayout"</span>: <span class="json-str">"compact"</span>,
+    <span class="json-key">"telemetryLevel"</span>: <span class="json-str">"minimal"</span>
+  }
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-activity">
+    <div class="ep-header" onclick="toggle('ep-activity')">
+      <span class="method-badge get">GET</span>
+      <span class="ep-path">/user/activity</span>
+      <span class="ep-summary">Recent actions</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Returns the latest server-side activity events stored for the user object.</p>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"recentActivity"</span>: [
+    {
+      <span class="json-key">"action"</span>: <span class="json-str">"account_created"</span>,
+      <span class="json-key">"ts"</span>: <span class="json-str">"2026-03-19T00:00:00.000Z"</span>
+    }
+  ]
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-update">
+    <div class="ep-header" onclick="toggle('ep-update')">
+      <span class="method-badge post">POST</span>
+      <span class="ep-path">/update</span>
+      <span class="ep-summary">Merge profile data</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Accepts a JSON object and merges it into the current profile record.</p>
+
+      <div class="sub-label">Example request</div>
+      <div class="request-block"><pre>{
+  <span class="json-key">"username"</span>: <span class="json-str">"hacker"</span>,
+  <span class="json-key">"bio"</span>: <span class="json-str">"I break things for fun."</span>,
+  <span class="json-key">"preferences"</span>: {
+    <span class="json-key">"dashboardLayout"</span>: <span class="json-str">"expanded"</span>
+  }
+}</pre></div>
+
+      <div class="sub-label">Body schema</div>
+      <table class="schema-table">
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>username</code></td><td><span class="type-tag">string</span></td><td>Display name</td></tr>
+          <tr><td><code>bio</code></td><td><span class="type-tag">string</span></td><td>Profile biography</td></tr>
+          <tr><td><code>theme</code></td><td><span class="type-tag">string</span></td><td>UI mode</td></tr>
+          <tr><td><code>preferences</code></td><td><span class="type-tag">object</span></td><td>Nested preference values</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"message"</span>: <span class="json-str">"Profile updated!"</span>,
+  <span class="json-key">"requestId"</span>: <span class="json-str">"req_h3af92qz"</span>,
+  <span class="json-key">"user"</span>: { ... }
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-pref-post">
+    <div class="ep-header" onclick="toggle('ep-pref-post')">
+      <span class="method-badge post">POST</span>
+      <span class="ep-path">/user/preferences</span>
+      <span class="ep-summary">Update preferences</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Updates the nested preferences object used by the application shell.</p>
+      <div class="sub-label">Example request</div>
+      <div class="request-block"><pre>{
+  <span class="json-key">"editorMode"</span>: <span class="json-str">"nano"</span>,
+  <span class="json-key">"telemetryLevel"</span>: <span class="json-str">"verbose"</span>
+}</pre></div>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"message"</span>: <span class="json-str">"Preferences updated!"</span>,
+  <span class="json-key">"preferences"</span>: { ... }
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-notif">
+    <div class="ep-header" onclick="toggle('ep-notif')">
+      <span class="method-badge get">GET</span>
+      <span class="ep-path">/notifications</span>
+      <span class="ep-summary">Notification settings</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Fetches current delivery settings for system notifications.</p>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"notificationSettings"</span>: {
+    <span class="json-key">"email"</span>: <span class="json-bool">false</span>,
+    <span class="json-key">"push"</span>: <span class="json-bool">false</span>,
+    <span class="json-key">"securityAlerts"</span>: <span class="json-bool">true</span>
+  }
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-notif-test">
+    <div class="ep-header" onclick="toggle('ep-notif-test')">
+      <span class="method-badge post">POST</span>
+      <span class="ep-path">/notifications/test</span>
+      <span class="ep-summary">Queue simulated test notification</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Queues a fake notification event for dashboard testing.</p>
+      <div class="sub-label">Example request</div>
+      <div class="request-block"><pre>{
+  <span class="json-key">"channel"</span>: <span class="json-str">"security"</span>
+}</pre></div>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"queued"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"channel"</span>: <span class="json-str">"security"</span>,
+  <span class="json-key">"etaSeconds"</span>: <span class="json-num">3</span>
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-apikeys">
+    <div class="ep-header" onclick="toggle('ep-apikeys')">
+      <span class="method-badge post">POST</span>
+      <span class="ep-path">/apikeys</span>
+      <span class="ep-summary">Create API key metadata</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Creates a mock API key record and returns the generated token once.</p>
+      <div class="sub-label">Response</div>
+      <span class="status-badge status-201">201 Created</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"message"</span>: <span class="json-str">"API key created."</span>,
+  <span class="json-key">"apiKey"</span>: <span class="json-str">"ppz_..."</span>,
+  <span class="json-key">"metadata"</span>: { ... }
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ep-admin">
+    <div class="ep-header" onclick="toggle('ep-admin')">
+      <span class="method-badge get">GET</span>
+      <span class="ep-path">/admin</span>
+      <span class="ep-summary">Restricted administrative view</span>
+      <span class="ep-chevron">&#x25B6;</span>
+    </div>
+    <div class="ep-body">
+      <p class="ep-desc">Administrative endpoint reserved for privileged users.</p>
+      <div class="sub-label">Success response</div>
+      <span class="status-badge status-200">200 OK</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"message"</span>: <span class="json-str">"Welcome, admin!"</span>,
+  <span class="json-key">"flag"</span>: <span class="json-str">"GRIZZ{???????????????????????????}"</span>
+}</pre></div>
+
+      <div class="sub-label">Denied response</div>
+      <span class="status-badge status-403">403 Forbidden</span>
+      <div class="response-block"><pre>{
+  <span class="json-key">"error"</span>: <span class="json-str">"Access denied. Admins only."</span>
+}</pre></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Proto-Palooza — GrizzHacks web challenge</p>
+</footer>
+
+<script>
+function toggle(id){document.getElementById(id).classList.toggle('expanded')}
+function copyBase(){
+  navigator.clipboard.writeText(document.getElementById('base-url-text').textContent);
+}
+</script>
+</body>
+</html>
