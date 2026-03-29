@@ -18,7 +18,7 @@ docker build -t ecbeast:latest .
 ## Run the challenge
 
 ```bash
-docker run --rm -p 1337:1337 ecbeast:latest
+docker run --rm -p 5337:5337 ecbeast:latest
 # or optionally just run:
 ./run.sh
 ```

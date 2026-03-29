@@ -57,8 +57,8 @@ import os
 # Configuration
 # =============================================================================
 LOCAL = False              # Set to False for remote connection
-HOST = "localhost"
-PORT = 1337
+HOST = "172.237.157.114"
+PORT = 5337
 
 BLOCK_SIZE = 16            # AES block size
 PAD_BLOCK = 32             # Challenge's padding boundary

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-from pwn import process, remote
+from pwn import *
 from dataclasses import dataclass
 from typing import List, Tuple
 import re
 import sys
-
+log.level = 'DEBUG'
 HEX_RE = re.compile(rb"^[0-9a-fA-F]+$")
 
 MASK32 = 0xFFFFFFFF

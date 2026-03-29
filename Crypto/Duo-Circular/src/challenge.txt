@@ -1,0 +1,32 @@
+Tropic Like It's Hot
+====================
+
+SmoothieMesh IoT insists its beachside blender fleet uses a "tropical semiring secure
+duo-circulant mixer exchange" that is definitely, absolutely, probably not broken.
+
+You intercepted one session between Kiosk #1 ("Mango Oblivion") and Kiosk #2
+("Banana Zero-Trust").
+
+The vendor says the protocol is safe because:
+  - it uses matrices,
+  - it uses tropical algebra,
+  - the brochure had a palm tree on it.
+
+Recover the shared mixer state and decrypt the encrypted order token.
+
+Public parameters:
+  m      = 64
+  alpha  = 913271
+  w      = 37
+  v      = 22001
+  c      = -18777
+  zig_a  = 11
+  zig_b  = 17
+  lime_a = 29
+  lime_b = 43
+
+Files:
+  - challenge.json
+
+Goal:
+  Recover the flag from the intercepted transcript.

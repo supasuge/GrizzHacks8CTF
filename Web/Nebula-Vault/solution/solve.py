@@ -39,7 +39,7 @@ def must_ok(resp: requests.Response, step: str) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Nebula Vault solver (full flow + traversal).")
-    ap.add_argument("--base", default="http://127.0.0.1:5000", help="Base URL")
+    ap.add_argument("--base", default="http://172.237.157.114:6969/", help="Base URL")
     ap.add_argument("--callsign", default="SOLVER-ONE", help="Callsign to register")
     ap.add_argument("--timeout", type=int, default=10, help="HTTP timeout seconds")
     ap.add_argument("--no-avatar-check", action="store_true", help="Skip GET /me/avatar verification")

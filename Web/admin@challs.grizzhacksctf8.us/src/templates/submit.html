@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="panel">
+  <div class="panelhead">
+    <div>
+      <h1>Submit for Ranger Review</h1>
+      <p class="muted">
+        Submit a <span class="mono">path</span> on this site. The ranger-bot will visit it.
+        What could possibly go wrong.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <form method="post" action="{{ url_for('submit_post') }}">
+      <div class="muted" style="margin-bottom:10px;">
+        Example: <span class="mono">/?mood=cedar</span>
+      </div>
+
+      <input class="mono" name="path"
+             style="width:100%; padding:10px; border-radius:12px; border:1px solid rgba(180,255,210,.16); background:rgba(0,0,0,.25); color:rgba(230,255,242,.92);"
+             placeholder="/?mood=..." value="{{ path_value }}"/>
+
+      <div class="pillrow" style="margin-top:12px;">
+        <button class="pill" type="submit" style="cursor:pointer;">Queue Visit</button>
+        <a class="pill" href="{{ url_for('reports') }}">Go to Reports</a>
+      </div>
+    </form>
+
+    {% if message %}
+      <div class="hint">{{ message }}</div>
+    {% endif %}
+
+    {% if ticket %}
+      <div class="hint">
+        <div><strong>Your ticket:</strong> <span class="mono" id="ticket">{{ ticket }}</span></div>
+        <div style="margin-top:8px;">
+          <strong>One-time report link:</strong>
+          <span class="mono">/reports?ticket={{ ticket }}</span>
+        </div>
+        <div class="muted" style="margin-top:10px;">
+          The report is cleared after the first successful view.
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title if title else "Grizzly Grove Archive" }}</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/darkly/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="forest-bg">
+  <nav class="navbar navbar-expand-lg navbar-dark glass-nav sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-3" href="{{ url_for('index') }}">
+        <span class="brand-badge">GB-3026</span>
+        <span class="fw-bold tracking-tighter">GRIZZLY GROVE <span class="text-muted fw-light">ARCHIVE</span></span>
+      </a>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('index') }}">Index</a></li>
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-archive" href="{{ url_for('slurp') }}?ladle=chef/notes">Security Notes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 text-muted small">
+          &copy; 3026 ARCHIVAL DIVISION // SECTOR 7G <br>
+          <span class="text-honey" style="color: var(--honey)">Operational Status: Nominal</span>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+          <span class="badge archive-tag">Bio-Hazard Level: Low</span>
+          <span class="badge archive-tag">Librarian Mood: Sated</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="panel">
+  <div class="card">
+    <h1>{{ title }}</h1>
+    <p class="muted" style="white-space:pre-wrap;">{{ message }}</p>
+    <div class="pillrow">
+      <span class="pill danger">status: {{ status }}</span>
+      <a class="pill" href="{{ url_for('index') }}">back</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

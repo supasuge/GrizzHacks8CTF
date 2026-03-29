@@ -1,0 +1,7 @@
+Orbital Salvage // Recovery Node 7
+
+A damaged recovery node is still exposing the upper 48 bits of eight consecutive PRNG states.
+The operator token is encrypted under a key derived from later PRNG output.
+Recover the token.
+
+Remote: nc HOST 31337

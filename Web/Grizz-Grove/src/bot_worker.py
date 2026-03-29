@@ -12,8 +12,9 @@ from playwright.sync_api import sync_playwright
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.environ.get("DB_PATH", os.path.join(APP_DIR, "state.db"))
 
-BASE_URL = os.environ.get("BOT_BASE_URL", "http://127.0.0.1:1338")
+BASE_URL = os.environ.get("BOT_BASE_URL", "http://127.0.0.1:8080")
 VISIT_TIMEOUT_MS = int(os.environ.get("BOT_VISIT_TIMEOUT_MS", "6000"))
+SETTLE_TIMEOUT_MS = int(os.environ.get("BOT_SETTLE_TIMEOUT_MS", "2500"))
 POLL_INTERVAL = float(os.environ.get("BOT_POLL_INTERVAL", "0.75"))
 MAX_PER_LOOP = int(os.environ.get("BOT_MAX_PER_LOOP", "2"))
 TTL_SECONDS = int(os.environ.get("SUBMISSION_TTL_SECONDS", "1800"))
@@ -34,6 +35,14 @@ def cleanup_old(conn: sqlite3.Connection) -> None:
     conn.execute(
         "DELETE FROM submissions WHERE created_at < ? OR (consumed_at IS NOT NULL AND consumed_at < ?)",
         (cutoff, cutoff),
+    )
+
+
+def recover_stale_visits(conn: sqlite3.Connection) -> None:
+    cutoff = int(time.time()) - TTL_SECONDS
+    conn.execute(
+        "UPDATE submissions SET status='queued' WHERE status='visiting' AND created_at >= ?",
+        (cutoff,),
     )
 
 
@@ -64,7 +73,10 @@ def append_ticket(path: str, ticket: str) -> str:
 
 
 def main() -> None:
-    print(f"[bot] BASE_URL={BASE_URL} DB_PATH={DB_PATH}")
+    print(
+        f"[bot] BASE_URL={BASE_URL} DB_PATH={DB_PATH} "
+        f"VISIT_TIMEOUT_MS={VISIT_TIMEOUT_MS} SETTLE_TIMEOUT_MS={SETTLE_TIMEOUT_MS}"
+    )
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
@@ -80,11 +92,10 @@ def main() -> None:
             "sameSite": "Lax",
         }])
 
-        page = ctx.new_page()
-
         while True:
             with db() as conn:
                 cleanup_old(conn)
+                recover_stale_visits(conn)
                 rows = conn.execute(
                     "SELECT ticket, path FROM submissions WHERE status='queued' ORDER BY created_at ASC LIMIT ?",
                     (MAX_PER_LOOP,),
@@ -110,9 +121,14 @@ def main() -> None:
                 url = urljoin(BASE_URL, visited_path.lstrip("/"))
                 print(f"[bot] Visiting ticket={ticket} url={url}")
 
+                page = None
                 try:
+                    page = ctx.new_page()
                     page.goto(url, wait_until="domcontentloaded", timeout=VISIT_TIMEOUT_MS)
-                    page.wait_for_timeout(1200)
+                    try:
+                        page.wait_for_load_state("networkidle", timeout=SETTLE_TIMEOUT_MS)
+                    except Exception:
+                        page.wait_for_timeout(SETTLE_TIMEOUT_MS)
 
                     def _mark_visited(c: sqlite3.Connection):
                         c.execute(
@@ -129,6 +145,12 @@ def main() -> None:
                         )
                     db_write(_mark_error)
                     print(f"[bot] Error ticket={ticket}: {type(e).__name__}: {e}")
+                finally:
+                    if page is not None:
+                        try:
+                            page.close()
+                        except Exception:
+                            pass
 
 
 if __name__ == "__main__":

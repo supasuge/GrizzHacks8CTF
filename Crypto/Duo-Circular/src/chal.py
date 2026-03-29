@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/python3
 
 
@@ -235,6 +236,221 @@ def main():
     print(f"[+] Public params: α={alpha}, w={w}, v={v}, c={c}")
     print(f"[+] AES key (hex): {aes_key.hex()}")
     print(f"[+] Flag: {flag}")
+=======
+#!/usr/bin/env python3
+"""
+Tropic Like It's Hot
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import random
+from pathlib import Path
+from typing import List
+
+# ---------------------- challenge parameters ----------------------
+
+OUT_JSON = Path("challenge.json")
+OUT_TXT = Path("challenge.txt")
+
+# "Difficult" here means the one-time O(m^3) max-plus precomputation is larger.
+# The scheme is still structurally broken by design.
+M = 64
+
+# Public "recipe" parameters
+ALPHA = 913_271
+W = 37
+V = 22_001
+C = -18_777
+ZIG_A = 11
+ZIG_B = 17
+LIME_A = 29
+LIME_B = 43
+
+# Secret scalar parameters (the real secret material)
+SECRET_RANGE = 2_000_000
+
+FLAG = open('flag.txt', 'rb').read()
+RNG = random.SystemRandom()
+
+# ---------------------- max-plus helpers ----------------------
+
+Matrix = List[List[int]]
+
+def maxplus_add_scalar(s: int, A: Matrix) -> Matrix:
+    return [[s + x for x in row] for row in A]
+
+def maxplus_mul(A: Matrix, B: Matrix) -> Matrix:
+    n = len(A)
+    out = [[-(10**30)] * n for _ in range(n)]
+    for i in range(n):
+        Ai = A[i]
+        for k in range(n):
+            aik = Ai[k]
+            Bk = B[k]
+            # max-plus: out[i][j] = max(out[i][j], A[i][k] + B[k][j])
+            for j in range(n):
+                cand = aik + Bk[j]
+                if cand > out[i][j]:
+                    out[i][j] = cand
+    return out
+
+def xor_bytes(a: bytes, b: bytes) -> bytes:
+    return bytes(x ^ y for x, y in zip(a, b))
+
+def matrix_to_bytes(A: Matrix) -> bytes:
+    return ("\n".join(",".join(str(x) for x in row) for row in A)).encode()
+
+def expand_keystream(seed: bytes, length: int) -> bytes:
+    out = bytearray()
+    counter = 0
+    while len(out) < length:
+        block = hashlib.sha256(seed + counter.to_bytes(4, "big")).digest()
+        out.extend(block)
+        counter += 1
+    return bytes(out[:length])
+
+
+def build_public_template(
+    m: int,
+    alpha: int,
+    w: int,
+    twist: int,
+    zig: int,
+    lime: int,
+) -> Matrix:
+    A = [[0] * m for _ in range(m)]
+    for i in range(m):
+        for j in range(m):
+            offset = (j - i) % m
+
+            base = alpha - offset * w
+            if offset != 0:
+                base += twist
+
+            row_term = ((i * zig) % lime) - (lime // 2)
+            col_term = ((j * (zig + 3)) % (lime + 7)) - ((lime + 7) // 2)
+            orbit_term = ((i * 7 + j * 13 + offset * 5) % 19) - 9
+
+            A[i][j] = base + row_term + col_term + orbit_term
+    return A
+
+def build_secret_family_member(secret: int, template: Matrix) -> Matrix:
+    return maxplus_add_scalar(secret, template)
+
+def random_matrix(m: int, lo: int, hi: int) -> Matrix:
+    return [[RNG.randint(lo, hi) for _ in range(m)] for _ in range(m)]
+
+# ---------------------- main generation ----------------------
+
+def main() -> None:
+    C_A = build_public_template(M, ALPHA, W, V, ZIG_A, LIME_A)
+    C_B = build_public_template(M, ALPHA, W, C, ZIG_B, LIME_B)
+
+    # Four secret scalars
+    a1 = RNG.randint(-SECRET_RANGE, SECRET_RANGE)
+    b1 = RNG.randint(-SECRET_RANGE, SECRET_RANGE)
+    a2 = RNG.randint(-SECRET_RANGE, SECRET_RANGE)
+    b2 = RNG.randint(-SECRET_RANGE, SECRET_RANGE)
+
+    # Secret matrices
+    A1 = build_secret_family_member(a1, C_A)
+    B1 = build_secret_family_member(b1, C_B)
+    A2 = build_secret_family_member(a2, C_A)
+    B2 = build_secret_family_member(b2, C_B)
+
+    # Public transport matrix
+    X = random_matrix(M, -750_000, 750_000)
+
+    # Protocol messages
+    Ka = maxplus_mul(maxplus_mul(A1, X), B1)
+    Kb = maxplus_mul(maxplus_mul(A2, X), B2)
+
+    # Shared key matrix
+    Y1 = maxplus_mul(maxplus_mul(A1, Kb), B1)
+    Y2 = maxplus_mul(maxplus_mul(A2, Ka), B2)
+    assert Y1 == Y2, "Protocol correctness failed unexpectedly."
+    K = Y1
+
+    # Encrypt the flag using a hash-derived keystream from the shared key matrix
+    seed = hashlib.sha256(matrix_to_bytes(K)).digest()
+    keystream = expand_keystream(seed, len(FLAG))
+    flag_enc = xor_bytes(FLAG, keystream).hex()
+
+    handout = f"""\
+Tropic Like It's Hot
+====================
+
+SmoothieMesh IoT insists its beachside blender fleet uses a "tropical semiring secure
+duo-circulant mixer exchange" that is definitely, absolutely, probably not broken.
+
+You intercepted one session between Kiosk #1 ("Mango Oblivion") and Kiosk #2
+("Banana Zero-Trust").
+
+The vendor says the protocol is safe because:
+  - it uses matrices,
+  - it uses tropical algebra,
+  - the brochure had a palm tree on it.
+
+Recover the shared mixer state and decrypt the encrypted order token.
+
+Public parameters:
+  m      = {M}
+  alpha  = {ALPHA}
+  w      = {W}
+  v      = {V}
+  c      = {C}
+  zig_a  = {ZIG_A}
+  zig_b  = {ZIG_B}
+  lime_a = {LIME_A}
+  lime_b = {LIME_B}
+
+Files:
+  - challenge.json
+
+Goal:
+  Recover the flag from the intercepted transcript.
+"""
+
+    obj = {
+        "name": "Tropic Like It's Hot",
+        "flavor_text": handout,
+        "public": {
+            "m": M,
+            "alpha": ALPHA,
+            "w": W,
+            "v": V,
+            "c": C,
+            "zig_a": ZIG_A,
+            "zig_b": ZIG_B,
+            "lime_a": LIME_A,
+            "lime_b": LIME_B,
+            "X": X,
+            "Ka": Ka,
+            "Kb": Kb,
+            "flag_enc": flag_enc,
+        },
+        "_private": {
+            "a1": a1,
+            "b1": b1,
+            "a2": a2,
+            "b2": b2,
+            "K": K,
+            "flag": FLAG.decode(),
+        },
+    }
+
+    OUT_JSON.write_text(json.dumps(obj), encoding="utf-8")
+    OUT_TXT.write_text(handout, encoding="utf-8")
+
+    print(f"[+] wrote {OUT_JSON}")
+    print(f"[+] wrote {OUT_TXT}")
+    print("[+] challenge generated")
+    print(f"[+] matrix dimension m = {M}")
+    print("[+] difficulty note: larger m only increases one-time tropical multiplication cost")
+>>>>>>> bd185c3 (more stuff)
 
 
 if __name__ == "__main__":

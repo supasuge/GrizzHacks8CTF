@@ -1,0 +1,22 @@
+[package]
+name = "orbital-salvage"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chacha20poly1305 = "0.10"
+sha2 = "0.10"
+hex = "0.4"
+# AES deps retained for decoy crypto path (reversing misdirection)
+aes = "0.8"
+cbc = "0.1"
+cipher = { version = "0.4", features = ["block-padding", "alloc"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+incremental = false
