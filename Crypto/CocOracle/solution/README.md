@@ -240,7 +240,7 @@ Source: Claude
 
 COCONUT98 demonstrates that **eliminating all high-probability differentials for the full cipher is not sufficient** to guarantee security against differential-style attacks. The boomerang technique shows that:
 
-- A characteristic of probability $q$ for **half** the cipher suffices for an attack needing $O(q^{-4})$ queries/home/supasuge/Documents/Notes/Main-Notes-Sync/imgs/Pasted image 20260330212524.png
+- A characteristic of probability $q$ for **half** the cipher suffices for an attack needing $O(q^{-4})$ queries
 - In COCONUT98, $q \approx 2^{-4}$ gives $O(2^{16})$ : far below the $2^{64}$ implied by the decorrelation proof
 - The decorrelation module provides real benefit. Without it, conventional differential attacks work in $\approx 2^8$ queries, so the module roughly **squares** the security level of the base cipher, just not to $2^{64}$
 - The fix would require either significantly more Feistel rounds per half, or a decorrelation module embedded **within each round** (as in the DFC AES submission)
