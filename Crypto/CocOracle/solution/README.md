@@ -255,5 +255,5 @@ COCONUT98 demonstrates that **eliminating all high-probability differentials for
 
 ### Good visual reference
 
-
+![diagram.png](./diagram.png)
 
