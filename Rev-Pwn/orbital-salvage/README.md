@@ -2,8 +2,8 @@
 
 A Rust CTF reversing/crypto challenge built around:
 
-- truncated 64-bit LCG state leakage
-- AES-256-CBC key derivation from subsequent PRNG state
+- truncated 64-bit LCG state leakage,48 lower bits given.
+- `ChaCha20Poly1305` key derivation from subsequent PRNG state
 - weak anti-debug heuristics
 - decoy validation and fake crypto material
 
